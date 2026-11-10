@@ -10,30 +10,34 @@
  */
 class Solution {
     public void reorderList(ListNode head) {
-        if(head == null || head.next == null) return;
-        Stack<ListNode>stack= new Stack<>();
-        ListNode temp=head;
-        int count =0;
-        while(temp!=null){
-            stack.push(temp);
-            temp=temp.next;
+        ListNode slow=head;
+        ListNode fast = head;
+        while(fast.next!=null && fast.next.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
         }
-        int size=0;
-        if((stack.size())%2 != 0){
-            size=stack.size()/2;
+        ListNode second=slow.next;
+        slow.next=null;
+
+        ListNode curr=second;
+        ListNode prev=null;
+
+        while(curr!=null){
+            ListNode nextnode = curr.next;
+            curr.next=prev;
+            prev=curr;
+            curr=nextnode;
         }
-        else{
-            size=(stack.size()/2)+1;
+        second=prev;
+        ListNode first=head;
+        while(second!=null){
+            ListNode temp1 =first.next;
+            ListNode temp2=second.next;
+            first.next = second;
+            second.next =temp1;
+            first=temp1;
+            second=temp2;
         }
-        temp=head;
-        ListNode temp2;
-        while(count<size){
-            temp2=stack.pop();
-            temp2.next=temp.next;
-            temp.next=temp2;
-            temp=temp.next.next;
-            count++;
-        }
-        temp.next=null;
+        
     }
 }
