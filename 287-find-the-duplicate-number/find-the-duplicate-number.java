@@ -1,38 +1,16 @@
-public class Node{
-    int val;
-    Node next;
-    Node(int a){
-        val=a;
-        next=null;  
-    }
-}
 class Solution {
     public int findDuplicate(int[] nums) {
-        Node[] node=new Node[nums.length];
-
-        for(int i=0;i<nums.length;i++){
-            node[i]=new Node(i);
+        int sp=nums[0], fp=nums[0];
+        do {
+            sp = nums[sp];
+            fp = nums[nums[fp]];
         }
-
-        for(int i=0;i<nums.length;i++){
-            node[i].next=node[nums[i]];
+        while(sp != fp);
+        sp=nums[0];
+        while(sp!=fp) {
+            sp = nums[sp];
+            fp = nums[fp];
         }
-
-        Node slow=node[0];
-        Node fast = node[0];
-
-        do{
-            slow=slow.next;
-            fast=fast.next.next;
-        }while(slow!=fast);
-
-        slow=node[0];
-        while(slow != fast){
-            slow= slow.next;
-            fast=fast.next;
-
-        }
-        return slow.val;
-
+        return sp;
     }
 }
